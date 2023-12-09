@@ -1,4 +1,4 @@
-# Title:    2023 Advent of Code -- Day 2 Part 2: Cube Conundrum
+# Title:    2023 Advent of Code -- Day 2 Part 1: Cube Conundrum
 # Author:   Roshan Darji
 # Date:     2023-12-09
 

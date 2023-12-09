@@ -42,31 +42,6 @@ assert extract_cube_counts(
 ) == {"game": 5, "red": 6, "blue": 2, "green": 3}
 
 
-# Calculate cube power
-def calculate_cube_power(cube_counts: dict) -> int:
-    # Calculate cube power
-    cube_power = cube_counts["red"] * cube_counts["blue"] * cube_counts["green"]
-
-    return cube_power
-
-
-# Tests for calculate_cube_power
-assert calculate_cube_power(
-    extract_cube_counts("Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green")
-) == 48
-assert calculate_cube_power(
-    extract_cube_counts("Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue")
-) == 12
-assert calculate_cube_power(
-    extract_cube_counts("Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red")
-) == 1560
-assert calculate_cube_power(
-    extract_cube_counts("Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red")
-) == 630
-assert calculate_cube_power(
-    extract_cube_counts("Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green")
-) == 36
-
 with open("day-2/d2p1-input.txt", "r") as file:
     lines = file.readlines()
 
@@ -74,7 +49,7 @@ with open("day-2/d2p1-input.txt", "r") as file:
 cube_counts = [extract_cube_counts(line) for line in lines]
 
 # Calculate cube power for each game
-cube_power = [calculate_cube_power(game) for game in cube_counts]
+cube_power = [game["red"] * game["blue"] * game["green"] for game in cube_counts]
 
 # Sum cube power to get result
 result = sum(cube_power)
