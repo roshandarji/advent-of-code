@@ -1,25 +1,35 @@
 from icecream import ic
+from typing import Generator, Tuple, List
+import re
 
-def read_file_to_matrix(filename: str) -> list:
+def read_input(filename: str) -> list:
     with open(filename, 'r') as f:
-        matrix = [list(line.strip()) for line in f.readlines()]
+        return f.read().splitlines()
 
-    strings = []
-    for i in range(len(matrix)):
-        for j in range(len(matrix[i])):
-            if matrix[i][j] != '.':
-                string = ''
-                for dx in [-1, 0, 1]:
-                    for dy in [-1, 0, 1]:
-                        if dx == 0 and dy == 0:
-                            continue
-                        ni = i + dx
-                        nj = j + dy
-                        if 0 <= ni < len(matrix) and 0 <= nj < len(matrix[i]) and matrix[ni][nj].isalpha():
-                            string += matrix[ni][nj]
-                if string:
-                    strings.append(string)
+def is_symbol(char: str) -> bool:
+    return char != '.' and not char.isdigit()
 
-    return matrix, strings
+def get_part_numbers(input: list) -> Generator[Tuple[int, str, int, int, int], None, None]:
+    for i, line in enumerate(input):
+        for match_num in re.finditer(r'\d+', line):
+            start = match_num.start(0) - 1
+            end = match_num.end(0)
+            number = int(match_num.group(0))
+            yield i, line, start, end, number
 
-ic(read_file_to_matrix('day-3/d3p1-example.txt'))
+schematic = read_input("2023/day-3/d3p1-input.txt")
+part_sum = 0
+
+for i, line, start, end, number in get_part_numbers(schematic):
+    # Check if a symbol is to the left or right of a number
+    if (start >= 0 and is_symbol(line[start])) or (end < len(line) and is_symbol(line[end])):
+        part_sum += number
+    
+    # Check if a symbol is in the lines above or below the number
+    for j in range(start, end + 1):
+        if j >= len(line): # Check if we're at the end of the line first
+            continue
+        if (i > 0 and is_symbol(schematic[i - 1][j])) or (i < len(schematic) - 2 and is_symbol(schematic[i + 1][j])):
+            part_sum += number
+
+ic(part_sum)
