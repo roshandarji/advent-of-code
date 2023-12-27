@@ -11,7 +11,7 @@ class Card: # Set up class to handle individual cards
     @classmethod
     def from_string(cls, card_string): # Method to parse cards from string
         index = (
-            int(re.search(r"Card\s*(\d+):", card_string.strip()).group(1))
+            int(re.search(r"Card\s*(\d+):", card_string).group(1))
             if re.search(r"Card\s*(\d+):", card_string)
             else None
         )
@@ -43,8 +43,7 @@ card_set = read_cards(r"2023/day-4/d4p1-input.txt")
 n = {card_num: 1 for card_num in range(1, len(card_set) + 1)}
 for card in range(len(card_set)):
     matches = len(set(card_set[card].win) & set(card_set[card].numbers))
-    
-    for copies in range(card_set[card].index, card_set[card].index + matches):
+    for copies in range(card_set[card].index + 1, card_set[card].index + 1 + matches):
         n[copies] += n[card_set[card].index]
 
 ic(sum(n.values()))
