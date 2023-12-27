@@ -40,10 +40,10 @@ assert example_card_set[0].numbers == [83, 86, 6, 31, 17, 9, 48, 53], "Card numb
 
 # Day 4 input
 card_set = read_cards(r"2023/day-4/d4p1-input.txt")
-n = {card_num: 1 for card_num in range(1, len(card_set) + 1)}
+n = [1] * (len(card_set) + 1)
 for card in range(len(card_set)):
     matches = len(set(card_set[card].win) & set(card_set[card].numbers))
     for copies in range(card_set[card].index + 1, card_set[card].index + 1 + matches):
         n[copies] += n[card_set[card].index]
 
-ic(sum(n.values()))
+ic(sum(n) - 1) # Subtract 1 to acconut for extra 1 in initialization
